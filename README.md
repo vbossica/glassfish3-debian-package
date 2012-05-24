@@ -7,8 +7,8 @@ Preparation
 * Gradle (http://gradle.org) must be installed
 * Download the official Glassfish version locally and unzip it into the `work` directory:
 
-    wget http://download.java.net/glassfish/3.1.2/release/glassfish-3.1.2.zip .
-    unzip glassfish-3.1.2.zip -d work
+	wget http://download.java.net/glassfish/3.1.2/release/glassfish-3.1.2.zip .
+	unzip glassfish-3.1.2.zip -d work
 
 Building the package
 --------------------
@@ -17,8 +17,8 @@ Building the package
 * Execute `gradle clean debian`
 * Install the glassfish3 package
 
-    sudo dpkg -i build/glassfish-3.1.2.deb
+	sudo dpkg -i build/glassfish-3.1.2.deb
 
 * Manage the Glassfish server with
 
-    sudo /etc/init.d/glassfish3
+	sudo /etc/init.d/glassfish3
