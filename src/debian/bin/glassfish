@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+#
+# glassfish init script for Linux
+
+GLASSFISH_HOME=/usr/local/lib/glassfish-3.1.2/glassfish
+
+LOGS_DIR=/var/log/glassfish3
+CONF_DIR=/var/lib/glassfish3
+
+USER=vladimir
+HTTP_PORT=8080
+ADMIN_PORT=4747
+MODJK_PORT=8019
+
+DOMAINS_HOME=/var/glassfish3
+DOMAIN_NAME=domain
+
+##################################################
+# Get the action & configs
+##################################################
+ACTION=$1
+
+##################################################
+# Setup JAVA if unset
+##################################################
+if [ -z "$JAVA" ]
+then
+  JAVA=$(which java)
+fi
+
+if [ -z "$JAVA" ]
+then
+  echo "Cannot find a Java JDK. Please set either set JAVA or put java (>=1.6) in your PATH." 2>&2
+  exit 1
+fi
+
+##################################################
+# Do the action
+##################################################
+case "$ACTION" in
+  check)
+    echo "Checking installation:"
+    echo "JAVA     = $JAVA"
+    echo
+    
+    exit 1
+
+    ;;
+
+  init)
+    echo "Initializing Glassfish domain wait ....."
+
+    echo "creating configuration directory"
+    mkdir -p $CONF_DIR    
+    chown $USER $CONF_DIR
+    echo "AS_ADMIN_MASTERPASSWORD=adminadmin" > $CONF_DIR/passfile.txt
+    echo "AS_ADMIN_PASSWORD=adminadmin" >> $CONF_DIR/passfile.txt
+    chown $USER $CONF_DIR/passfile.txt
+
+    echo "creating domains directory"
+    mkdir -p $DOMAINS_HOME    
+    chown $USER $DOMAINS_HOME
+
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin create-domain --user admin --adminport $ADMIN_PORT --domaindir $DOMAINS_HOME --instanceport $HTTP_PORT --savemasterpassword=true --passwordfile=$CONF_DIR/passfile.txt --savelogin=true $DOMAIN_NAME
+
+    rmdir $DOMAINS_HOME/$DOMAIN_NAME/logs
+    mkdir -p $LOGS_DIR
+    chown $USER $LOGS_DIR
+    ln -s $LOGS_DIR $DOMAINS_HOME/$DOMAIN_NAME/logs
+
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+
+    # configuration required for mod_jk
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin --port $ADMIN_PORT create-http-listener --listenerport $MODJK_PORT --listeneraddress 0.0.0.0 --defaultvs server jk-connector
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin --port $ADMIN_PORT set configs.config.server-config.network-config.network-listeners.network-listener.jk-connector.jk-enabled=true
+
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+
+    exit 1
+
+    ;;
+
+  start)
+    echo "Starting Glassfish please wait ....."
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+
+    exit 1
+
+    ;;
+
+  stop)
+    echo "Stopping Glassfish please wait ....."
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+
+    exit 1
+
+   ;;
+
+  restart)
+    echo "Restarting Glassfish please wait ....."
+    sudo -u $USER $GLASSFISH_HOME/bin/asadmin restart-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+
+    exit 1
+
+    ;;
+
+  *)
+    echo "usage: $0 (check|init|start|stop|restart)"
+
+    exit 1
+
+    ;;
+esac
+
+exit 0

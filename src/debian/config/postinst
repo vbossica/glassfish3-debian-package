@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+GLASSFISH_HOME=/usr/local/lib/glassfish-3.1.2/glassfish
+
+chmod a+x $GLASSFISH_HOME/bin/*

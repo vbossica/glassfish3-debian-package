@@ -1,0 +1,41 @@
+/**
+ * Gradle script to package Glassfish as a debian package.
+ */
+apply plugin: 'java'
+
+ext.jdebVersion = '0.10'
+
+ext.glassfishVersion = '3.1.2'
+ext.debUser = 'vladimir'
+ext.debGroup = 'vladimir'
+
+repositories {
+  mavenCentral()
+//  mavenLocal()
+}
+
+configurations {
+  jdeb
+}
+
+dependencies {
+  jdeb "org.vafer:jdeb:${jdebVersion}"
+}
+
+task debian() << {
+  ant.taskdef(name: 'deb', classname: 'org.vafer.jdeb.ant.DebAntTask',
+    classpath: configurations.jdeb.asPath)
+
+  ant.deb(destfile: "build/glassfish-${glassfishVersion}.deb",
+      control: 'src/debian/config', verbose: 'true') {
+
+    tarfileset(dir: 'src/debian/bin', prefix: '/etc/init.d', filemode: '755', username: debUser, group: debGroup)
+
+    // finally include the whole Glassfish release
+    tarfileset(dir: "work/glassfish3", prefix: "/usr/local/lib/glassfish-3.1.2", username: debUser, group: debGroup)
+    // would be nice to include the zip file directly but jdeb doesn't support it
+    // zipfileset(src: "glassfish-3.1.2.zip", prefix: "/usr/local/lib/glassfish-3.1.2")
+  }
+
+}
+
