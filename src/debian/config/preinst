@@ -1,2 +1,9 @@
 #!/usr/bin/env bash
 
+# creating the glassfish group and user
+if [ -z "$(getent group glassfish)" ]; then
+  sudo groupadd glassfish
+fi
+if [ -z "$(getent passwd glassfish)" ]; then
+  sudo useradd -g glassfish -c 'Glassfish administrator' glassfish
+fi

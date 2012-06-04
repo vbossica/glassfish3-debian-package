@@ -6,8 +6,8 @@ apply plugin: 'java'
 ext.jdebVersion = '0.10'
 
 ext.glassfishVersion = '3.1.2'
-ext.debUser = 'vladimir'
-ext.debGroup = 'vladimir'
+ext.debUser = 'glassfish'
+ext.debGroup = 'glassfish'
 
 repositories {
   mavenCentral()

@@ -1,2 +1,9 @@
 #!/usr/bin/env bash
 
+# deleting the glassfish group and user
+if [ -n "$(getent passwd glassfish)" ]; then
+  sudo userdel --force glassfish
+fi
+if [ -n "$(getent group glassfish)" ]; then
+  sudo groupdel glassfish
+fi

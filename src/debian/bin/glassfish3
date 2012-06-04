@@ -3,11 +3,11 @@
 # glassfish init script for Linux
 
 GLASSFISH_HOME=/usr/local/lib/glassfish-3.1.2/glassfish
+USER=glassfish
 
 LOGS_DIR=/var/log/glassfish3
 CONF_DIR=/var/lib/glassfish3
 
-USER=vladimir
 HTTP_PORT=8080
 ADMIN_PORT=4747
 MODJK_PORT=8019
