@@ -1,5 +1,38 @@
 #!/usr/bin/env bash
 
-GLASSFISH_HOME=/usr/local/lib/glassfish-3.1.2/glassfish
+GF3_HOME=/usr/share/glassfish3/glassfish
+USER=glassfish
+GROUP=glassfish
 
-chmod a+x $GLASSFISH_HOME/bin/*
+DOMAINS_HOME=/var/glassfish3
+DOMAIN_NAME=domain1
+
+LOGS_DIR=/var/log/glassfish3
+
+sudo chmod a+x $GF3_HOME/bin/*
+
+if [ -d "$GF3_HOME/domains" ]; then
+  echo "removing default domain"
+  sudo rm -rf $GF3_HOME/domains
+fi
+
+if [ ! -d "$LOGS_DIR" ]; then
+  echo "creating log directory '$LOGS_DIR'"
+  sudo mkdir -p $LOGS_DIR
+  sudo chown $USER:$GROUP $LOGS_DIR
+fi
+
+if [ ! -d "$DOMAINS_HOME" ]; then
+  echo "creating domains directory '$DOMAINS_HOME'"
+  sudo mkdir -p $DOMAINS_HOME
+  sudo chown $USER:$GROUP $DOMAINS_HOME
+fi
+
+if [ ! -d "$DOMAINS_HOME/$DOMAIN_NAME" ]; then
+  echo "creating domain 'domain1'"
+  sudo -u $USER $GF3_HOME/bin/asadmin create-domain --nopassword --domaindir $DOMAINS_HOME $DOMAIN_NAME
+  sudo rm -rf $DOMAINS_HOME/$DOMAIN_NAME/logs
+  sudo ln -s $LOGS_DIR $DOMAINS_HOME/$DOMAIN_NAME/logs
+fi
+
+

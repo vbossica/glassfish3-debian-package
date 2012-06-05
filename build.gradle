@@ -6,12 +6,9 @@ apply plugin: 'java'
 ext.jdebVersion = '0.10'
 
 ext.glassfishVersion = '3.1.2'
-ext.debUser = 'glassfish'
-ext.debGroup = 'glassfish'
 
 repositories {
   mavenCentral()
-//  mavenLocal()
 }
 
 configurations {
@@ -26,15 +23,13 @@ task debian() << {
   ant.taskdef(name: 'deb', classname: 'org.vafer.jdeb.ant.DebAntTask',
     classpath: configurations.jdeb.asPath)
 
-  ant.deb(destfile: "build/glassfish-${glassfishVersion}.deb",
+  ant.deb(destfile: "build/glassfish3-${glassfishVersion}.deb",
       control: 'src/debian/config', verbose: 'true') {
 
-    tarfileset(dir: 'src/debian/bin', prefix: '/etc/init.d', filemode: '755', username: debUser, group: debGroup)
+    tarfileset(dir: 'src/debian/bin', prefix: '/etc/init.d', filemode: '755', username: 'glassfish', group: 'glassfish')
 
     // finally include the whole Glassfish release
-    tarfileset(dir: "work/glassfish3", prefix: "/usr/local/lib/glassfish-3.1.2", username: debUser, group: debGroup)
-    // would be nice to include the zip file directly but jdeb doesn't support it
-    // zipfileset(src: "glassfish-3.1.2.zip", prefix: "/usr/local/lib/glassfish-3.1.2")
+    tarfileset(dir: "work/glassfish3", prefix: "/usr/share/glassfish3", username: 'glassfish', group: 'glassfish')
   }
 
 }

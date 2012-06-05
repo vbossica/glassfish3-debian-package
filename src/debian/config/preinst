@@ -2,8 +2,10 @@
 
 # creating the glassfish group and user
 if [ -z "$(getent group glassfish)" ]; then
+  echo "creating group 'glassfish'"
   sudo groupadd glassfish
 fi
 if [ -z "$(getent passwd glassfish)" ]; then
+  echo "creating user 'glassfish'"
   sudo useradd -g glassfish -c 'Glassfish administrator' glassfish
 fi

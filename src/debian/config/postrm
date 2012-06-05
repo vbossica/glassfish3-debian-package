@@ -1,9 +1,24 @@
 #!/usr/bin/env bash
 
+DOMAINS_HOME=/var/glassfish3
+LOGS_DIR=/var/log/glassfish3
+
 # deleting the glassfish group and user
 if [ -n "$(getent passwd glassfish)" ]; then
+  echo "removing user 'glassfish'"
   sudo userdel --force glassfish
 fi
 if [ -n "$(getent group glassfish)" ]; then
+  echo "removing group 'glassfish'"
   sudo groupdel glassfish
+fi
+
+if [ -d "$DOMAINS_HOME" ]; then
+  echo "removing domains directory"
+  sudo rm -rf $DOMAINS_HOME
+fi
+
+if [ -d "$LOGS_DIR" ]; then
+  echo "removing logs directory"
+  sudo rm -rf $LOGS_DIR
 fi

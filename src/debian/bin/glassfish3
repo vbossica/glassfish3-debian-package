@@ -2,18 +2,12 @@
 #
 # glassfish init script for Linux
 
-GLASSFISH_HOME=/usr/local/lib/glassfish-3.1.2/glassfish
+GF3_HOME=/usr/share/glassfish3/glassfish
 USER=glassfish
 
 LOGS_DIR=/var/log/glassfish3
-CONF_DIR=/var/lib/glassfish3
-
-HTTP_PORT=8080
-ADMIN_PORT=4747
-MODJK_PORT=8019
-
 DOMAINS_HOME=/var/glassfish3
-DOMAIN_NAME=domain
+DOMAIN_NAME=domain1
 
 ##################################################
 # Get the action & configs
@@ -47,42 +41,9 @@ case "$ACTION" in
 
     ;;
 
-  init)
-    echo "Initializing Glassfish domain wait ....."
-
-    echo "creating configuration directory"
-    mkdir -p $CONF_DIR    
-    chown $USER $CONF_DIR
-    echo "AS_ADMIN_MASTERPASSWORD=adminadmin" > $CONF_DIR/passfile.txt
-    echo "AS_ADMIN_PASSWORD=adminadmin" >> $CONF_DIR/passfile.txt
-    chown $USER $CONF_DIR/passfile.txt
-
-    echo "creating domains directory"
-    mkdir -p $DOMAINS_HOME    
-    chown $USER $DOMAINS_HOME
-
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin create-domain --user admin --adminport $ADMIN_PORT --domaindir $DOMAINS_HOME --instanceport $HTTP_PORT --savemasterpassword=true --passwordfile=$CONF_DIR/passfile.txt --savelogin=true $DOMAIN_NAME
-
-    rmdir $DOMAINS_HOME/$DOMAIN_NAME/logs
-    mkdir -p $LOGS_DIR
-    chown $USER $LOGS_DIR
-    ln -s $LOGS_DIR $DOMAINS_HOME/$DOMAIN_NAME/logs
-
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
-
-    # configuration required for mod_jk
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin --port $ADMIN_PORT create-http-listener --listenerport $MODJK_PORT --listeneraddress 0.0.0.0 --defaultvs server jk-connector
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin --port $ADMIN_PORT set configs.config.server-config.network-config.network-listeners.network-listener.jk-connector.jk-enabled=true
-
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
-
-    exit 1
-
-    ;;
-
   start)
     echo "Starting Glassfish please wait ....."
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+    sudo -u $USER $GF3_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
 
     exit 1
 
@@ -90,7 +51,7 @@ case "$ACTION" in
 
   stop)
     echo "Stopping Glassfish please wait ....."
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+    sudo -u $USER $GF3_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
 
     exit 1
 
@@ -98,14 +59,14 @@ case "$ACTION" in
 
   restart)
     echo "Restarting Glassfish please wait ....."
-    sudo -u $USER $GLASSFISH_HOME/bin/asadmin restart-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+    sudo -u $USER $GF3_HOME/bin/asadmin restart-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
 
     exit 1
 
     ;;
 
   *)
-    echo "usage: $0 (check|init|start|stop|restart)"
+    echo "usage: $0 (check|start|stop|restart)"
 
     exit 1
 
