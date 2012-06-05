@@ -7,5 +7,5 @@ if [ -z "$(getent group glassfish)" ]; then
 fi
 if [ -z "$(getent passwd glassfish)" ]; then
   echo "creating user 'glassfish'"
-  sudo useradd -g glassfish -c 'Glassfish administrator' glassfish
+  sudo useradd --gid glassfish --comment 'Glassfish administrator' --home /usr/share/glassfish3 glassfish
 fi
