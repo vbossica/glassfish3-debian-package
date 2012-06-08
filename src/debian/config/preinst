@@ -2,5 +2,5 @@
 
 # creating the glassfish group and user
 if [ -z "$(getent passwd glassfish)" ]; then
-  sudo adduser --system --no-create-home --group glassfish
+  sudo adduser --system --group --home /usr/share/glassfish3 glassfish
 fi
