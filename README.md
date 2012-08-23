@@ -6,19 +6,19 @@ The purpose of this project is to provide a debian package for the Glassfish3 ap
 Build
 -----
 
-The package is build using Gradle (http://gradle.org) version 1.0-rc3 so make sure it is installed on your system. Then you will have to download the official Glassfish archive and place it at the root of this checked out project:
+The package is build using Gradle (http://gradle.org) version 1.1 so make sure it is installed on your system. Then you will have to download the official Glassfish archive and place it at the root of this checked out project:
 
     wget http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2.zip .
 
-Then unzip it locally
+then unzip it locally
 
     gradle unzip
 
-To build the package, simply execute
+and create the package
 
     gradle clean debian
 
-Then copy the file `build/glassfish3-3.1.2.2.deb` wherever you want to install it.
+Finally, copy or publish the file `build/glassfish3-3.1.2.2.deb`.
 
 Installation
 ------------
