@@ -1,7 +1,7 @@
 Package: glassfish3
-Version: 3.1.2
+Version: 3.1.2.2
 Section: java ee
 Priority: hi
 Architecture: all
-Description: Glassfish 3.1.2 Java EE application server
+Description: Glassfish 3.1.2.2 Java EE application server
 Maintainer: vbossica@gmail.com

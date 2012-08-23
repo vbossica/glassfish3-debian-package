@@ -5,7 +5,7 @@ apply plugin: 'java'
 
 ext.jdebVersion = '0.10'
 
-ext.glassfishVersion = '3.1.2'
+ext.glassfishVersion = '3.1.2.2'
 
 repositories {
   mavenCentral()
@@ -17,6 +17,10 @@ configurations {
 
 dependencies {
   jdeb "org.vafer:jdeb:${jdebVersion}"
+}
+
+task unzip << {
+  ant.unzip(src: "glassfish-${glassfishVersion}.zip", dest: "work")
 }
 
 task debian() << {

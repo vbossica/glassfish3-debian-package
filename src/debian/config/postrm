@@ -1,5 +1,6 @@
 #!/bin/bash
 
+GF3_HOME=/usr/share/glassfish3
 DOMAINS_HOME=/var/glassfish3
 LOGS_DIR=/var/log/glassfish3
 
@@ -16,4 +17,9 @@ fi
 if [ -d "$LOGS_DIR" ]; then
   echo "removing logs directory"
   sudo rm -rf $LOGS_DIR
+fi
+
+if [ -d "$GF3_HOME" ]; then
+  echo "removing glassfish directory"
+  sudo rm -rf $GF3_HOME
 fi
