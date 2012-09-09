@@ -1,6 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 
-# creating the glassfish group and user
-if [ -z "$(getent passwd glassfish)" ]; then
-  sudo adduser --system --group --home /usr/share/glassfish3 glassfish
+GF3_HOME=/usr/share/glassfish3
+USER=glassfish
+
+#
+# IMPORTANT: the user running the glassfish server *must* have a home,
+# otherwise it will not be able to stop a server running in a secured
+# setting.
+#
+if [ -z "$(getent passwd $USER)" ]; then
+  echo "creating the user and group '$USER'"
+  sudo adduser --system --group --home $GF3_HOME $USER
 fi

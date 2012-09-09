@@ -6,7 +6,10 @@ GF3_HOME=/usr/share/glassfish3/glassfish
 USER=glassfish
 
 LOGS_DIR=/var/log/glassfish3
-DOMAINS_HOME=/var/glassfish3
+
+PASSWORD_FILE=/etc/glassfish3/passfile.txt
+ADMIN_USER=admin
+ADMIN_PORT=4848
 DOMAIN_NAME=domain1
 
 ##################################################
@@ -32,44 +35,45 @@ fi
 # Do the action
 ##################################################
 case "$ACTION" in
-  check)
-    echo "Checking installation:"
-    echo "JAVA     = $JAVA"
-    echo
-    
-    exit 1
-
-    ;;
 
   start)
     echo "Starting Glassfish please wait ....."
-    sudo -u $USER $GF3_HOME/bin/asadmin start-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE start-domain $DOMAIN_NAME
 
     exit 1
-
     ;;
 
   stop)
     echo "Stopping Glassfish please wait ....."
-    sudo -u $USER $GF3_HOME/bin/asadmin stop-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
-
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE stop-domain $DOMAIN_NAME
     exit 1
-
-   ;;
+    ;;
 
   restart)
     echo "Restarting Glassfish please wait ....."
-    sudo -u $USER $GF3_HOME/bin/asadmin restart-domain --domaindir $DOMAINS_HOME $DOMAIN_NAME
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE restart-domain $DOMAIN_NAME
 
     exit 1
+    ;;
 
+  create-domain)
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE create-domain --adminport $ADMIN_PORT --savemasterpassword=true --savelogin=false --checkports=true --nopassword=false $DOMAIN_NAME
+
+    sudo rm -rf $GF3_HOME/glassfish/domains/$DOMAIN_NAME/logs
+    sudo -u $USER mkdir -p $LOGS_DIR/$DOMAIN_NAME
+    sudo -u $USER ln -s $LOGS_DIR/$DOMAIN_NAME $GF3_HOME/domains/$DOMAIN_NAME/logs
+
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE start-domain $DOMAIN_NAME
+    #sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE --host localhost --port $ADMIN_PORT enable-secure-admin
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE stop-domain $DOMAIN_NAME
+
+    exit 1
     ;;
 
   *)
-    echo "usage: $0 (check|start|stop|restart)"
+    echo "usage: $0 (create-domain|start|stop|restart)"
 
     exit 1
-
     ;;
 esac
 

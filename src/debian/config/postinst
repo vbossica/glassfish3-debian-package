@@ -1,38 +1,25 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 GF3_HOME=/usr/share/glassfish3
 USER=glassfish
-GROUP=glassfish
 
 DOMAINS_HOME=/var/glassfish3
-DOMAIN_NAME=domain1
-
 LOGS_DIR=/var/log/glassfish3
 
-sudo chmod a+x $GF3_HOME/glassfish/bin/*
-
-if [ -d "$GF3_HOME/glassfish/domains" ]; then
-  echo "removing default domain"
-  sudo rm -rf $GF3_HOME/glassfish/domains
+if [ "$GF3_HOME/glassfish/bin" ]; then
+  sudo chmod a+x $GF3_HOME/glassfish/bin/*
 fi
 
 if [ ! -d "$LOGS_DIR" ]; then
   echo "creating log directory '$LOGS_DIR'"
   sudo mkdir -p $LOGS_DIR
-  sudo chown $USER:$GROUP $LOGS_DIR
+  sudo chown $USER:$USER $LOGS_DIR
 fi
 
 if [ ! -d "$DOMAINS_HOME" ]; then
   echo "creating domains directory '$DOMAINS_HOME'"
   sudo mkdir -p $DOMAINS_HOME
-  sudo chown $USER:$GROUP $DOMAINS_HOME
+  sudo chown $USER:$USER $DOMAINS_HOME
+  sudo -u $USER ln -s $DOMAINS_HOME $GF3_HOME/glassfish/domains
 fi
-
-if [ ! -d "$DOMAINS_HOME/$DOMAIN_NAME" ]; then
-  echo "creating domain 'domain1'"
-  sudo -u $USER $GF3_HOME/glassfish/bin/asadmin create-domain --nopassword --domaindir $DOMAINS_HOME $DOMAIN_NAME
-  sudo rm -rf $DOMAINS_HOME/$DOMAIN_NAME/logs
-  sudo ln -s $LOGS_DIR $DOMAINS_HOME/$DOMAIN_NAME/logs
-fi
-
 

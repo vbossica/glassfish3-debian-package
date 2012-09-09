@@ -9,9 +9,6 @@ Build
 The package is build using Gradle (http://gradle.org) version 1.1 so make sure it is installed on your system. Then you will have to download the official Glassfish archive and place it at the root of this checked out project:
 
     wget http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2.zip .
-
-then unzip it locally
-
     gradle unzip
 
 and create the package

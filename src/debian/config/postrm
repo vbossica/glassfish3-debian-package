@@ -1,13 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
 GF3_HOME=/usr/share/glassfish3
+USER=glassfish
+
 DOMAINS_HOME=/var/glassfish3
 LOGS_DIR=/var/log/glassfish3
-
-# deleting the glassfish group and user
-if [ -n "$(getent passwd glassfish)" ]; then
-  sudo deluser --system glassfish
-fi
 
 if [ -d "$DOMAINS_HOME" ]; then
   echo "removing domains directory"
@@ -20,6 +17,12 @@ if [ -d "$LOGS_DIR" ]; then
 fi
 
 if [ -d "$GF3_HOME" ]; then
-  echo "removing glassfish directory"
+  echo "removing server directory"
   sudo rm -rf $GF3_HOME
 fi
+
+if [ -n "$(getent passwd glassfish)" ]; then
+  echo "removing the user and group '$USER'"
+  sudo deluser --system $USER
+fi
+

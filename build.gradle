@@ -21,6 +21,8 @@ dependencies {
 
 task unzip << {
   ant.unzip(src: "glassfish-${glassfishVersion}.zip", dest: "work")
+  delete('work/glassfish3/.org.opensolaris,pkg')
+  delete('work/glassfish3/glassfish/domains')
 }
 
 task debian() << {
@@ -31,10 +33,11 @@ task debian() << {
       control: 'src/debian/config', verbose: 'true') {
 
     tarfileset(dir: 'src/debian/bin', prefix: '/etc/init.d', filemode: '755', username: 'glassfish', group: 'glassfish')
+    tarfileset(dir: 'src/debian/etc', prefix: '/etc/default', includes: 'glassfish3', filemode: '600', username: 'glassfish', group: 'glassfish')
+    tarfileset(dir: 'src/debian/etc', prefix: '/etc/glassfish3', includes: 'passfile.txt', filemode: '600', username: 'glassfish', group: 'glassfish')
 
     // finally include the whole Glassfish release
     tarfileset(dir: "work/glassfish3", prefix: "/usr/share/glassfish3", username: 'glassfish', group: 'glassfish')
   }
 
 }
-
