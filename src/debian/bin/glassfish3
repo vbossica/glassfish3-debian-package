@@ -1,16 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/sh
+
 #
-# glassfish init script for Linux
+# Init script for the JavaEE Glassfish3 server
+#
 
 GF3_HOME=/usr/share/glassfish3/glassfish
 USER=glassfish
 
 LOGS_DIR=/var/log/glassfish3
 
-PASSWORD_FILE=/etc/glassfish3/passfile.txt
-ADMIN_USER=admin
-ADMIN_PORT=4848
-DOMAIN_NAME=domain1
+# load the glassfish3 configuration file
+. /etc/default/glassfish3
 
 ##################################################
 # Get the action & configs

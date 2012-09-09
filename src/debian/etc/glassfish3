@@ -1,0 +1,9 @@
+#
+# Glassfish3 configuration file
+#
+
+DOMAIN_NAME=domain1
+ADMIN_USER=admin
+ADMIN_PORT=4848
+PASSWORD_FILE=/etc/glassfish3/passfile.txt
+
