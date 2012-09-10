@@ -54,5 +54,5 @@ Testing
 
 For testing purposes, the project contains a Vagrant [configuration file] [1] as well as a [provisioning script] [2]; executing `vagrant up` will create an Ubuntu (precise32) server with a running Glassfish3 server, accessible with the port (https://192.168.1.100:8080).
 
-  [1] https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile
-  [2] https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh
+  [1]: https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile
+  [2]: https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh
