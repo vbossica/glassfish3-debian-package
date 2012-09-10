@@ -64,7 +64,7 @@ case "$ACTION" in
     sudo -u $USER ln -s $LOGS_DIR/$DOMAIN_NAME $GF3_HOME/domains/$DOMAIN_NAME/logs
 
     sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE start-domain $DOMAIN_NAME
-    #sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE --host localhost --port $ADMIN_PORT enable-secure-admin
+    sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE --host localhost --port $ADMIN_PORT enable-secure-admin
     sudo -u $USER $GF3_HOME/bin/asadmin --user $ADMIN_USER --passwordfile $PASSWORD_FILE stop-domain $DOMAIN_NAME
 
     exit 1
