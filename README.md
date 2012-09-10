@@ -1,7 +1,7 @@
 Glassfish3 Debian Package
 =========================
 
-The purpose of this project is to provide a debian package for the Glassfish3 application server. It also features a rudimentary start/stop service for a single local domain.
+The purpose of this project is to provide a debian package for the Glassfish3 application server. A special user (_glassfish_) will own the server's process and the local domain will run by default in a secure mode. The server can also be started and stopped with a `sudo service glassfish3`.  
 
 Build
 -----
@@ -52,4 +52,7 @@ Here's what you should know about what you've just installed:
 Testing
 -------
 
-For testing purposes, the project contains a (https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile "Vagrant configuration") file as well as a (https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh "provisioning script"). After having installed Vagrant locally, executing `vagrant up` will automatically create an Ubuntu server (precise32) with a running Glassfish3 server, accessible with the port `192.168.1.100`.
+For testing purposes, the project contains a Vagrant [configuration file] [1] as well as a [provisioning script] [2]; executing `vagrant up` will create an Ubuntu (precise32) server with a running Glassfish3 server, accessible with the port (https://192.168.1.100:8080).
+
+  [1] https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile
+  [2] https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh
