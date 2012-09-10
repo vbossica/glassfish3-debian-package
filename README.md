@@ -6,7 +6,7 @@ The purpose of this project is to provide a debian package for the Glassfish3 ap
 Build
 -----
 
-The package is build using Gradle (http://gradle.org) version 1.1 so make sure it is installed on your system. Then you will have to download the official Glassfish archive and place it at the root of this checked out project:
+The package is build using [Gradle] [1] so make sure it is installed on your system. After having downloaded the official Glassfish archive and placed it at the root of this checked out project:
 
     wget http://download.java.net/glassfish/3.1.2.2/release/glassfish-3.1.2.2.zip .
     gradle unzip
@@ -52,7 +52,9 @@ Here's what you should know about what you've just installed:
 Testing
 -------
 
-For testing purposes, the project contains a Vagrant [configuration file] [1] as well as a [provisioning script] [2]; executing `vagrant up` will create an Ubuntu (precise32) server with a running Glassfish3 server, accessible with the port (https://192.168.1.100:8080).
+For testing purposes, the project contains a [Vagrant] [2] [configuration file] [3] as well as a [provisioning script] [4]; executing `vagrant up` will create an Ubuntu (precise32) server with a running Glassfish3 server, accessible via https://192.168.1.100:8080.
 
-  [1]: https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile
-  [2]: https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh
+  [1]: http://gradle.org
+  [2]: http://vagrantup.com
+  [3]: https://github.com/vbossica/glassfish3-debian-package/blob/master/Vagrantfile
+  [4]: https://github.com/vbossica/glassfish3-debian-package/blob/master/src/test/resources/provisioning.sh
